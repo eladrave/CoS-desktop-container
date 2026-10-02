@@ -1,0 +1,8 @@
+.git
+.github
+deploy.env
+.env
+.env.*
+*.key
+*.pem
+host#*.json
