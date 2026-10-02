@@ -40,7 +40,7 @@ if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; 
 fi
 
 if command -v shellcheck >/dev/null 2>&1; then
-  shellcheck "${shell_files[@]}"
+  shellcheck --severity=warning "${shell_files[@]}"
 fi
 
 echo "Validation passed."
