@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Chat On Steroids
+Comment=Start Chat On Steroids in the persistent desktop session
+Exec=/usr/bin/chat-on-steroids
+TryExec=/usr/bin/chat-on-steroids
+Terminal=false
+StartupNotify=true
+X-GNOME-Autostart-enabled=true
