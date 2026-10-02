@@ -1,0 +1,7 @@
+deploy.env
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+host#*.json
