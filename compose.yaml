@@ -1,0 +1,60 @@
+name: cos-desktop
+
+services:
+  desktop:
+    image: ${IMAGE_REF:?Set IMAGE_REF in deploy.env}
+    hostname: ${CONTAINER_HOSTNAME:-cos-desktop}
+    init: false
+    environment:
+      HOME: /home/cos
+      USER: cos
+      LOGNAME: cos
+      SHELL: /bin/bash
+      TZ: ${TZ:-Etc/UTC}
+      COS_DESKTOP_CRD_ENABLED: "${COS_DESKTOP_CRD_ENABLED:-1}"
+      CHROME_REMOTE_DESKTOP_DEFAULT_DESKTOP_SIZES: ${DESKTOP_SIZES:-1920x1080,2560x1440}
+      CHROME_REMOTE_DESKTOP_USE_XVFB: "1"
+      LIBGL_ALWAYS_SOFTWARE: "1"
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - KILL
+      - SETGID
+      - SETUID
+      - AUDIT_WRITE
+    security_opt:
+      - apparmor=unconfined
+      - seccomp=unconfined
+    volumes:
+      - type: bind
+        source: ${COS_HOME_PATH:-/var/lib/cos-desktop/home}
+        target: /home/cos
+      - type: bind
+        source: ${COS_MACHINE_PATH:-/var/lib/cos-desktop/machine}
+        target: /var/lib/cos-desktop-persistent
+    ports:
+      - "127.0.0.1:${NOVNC_PORT:-6080}:6080"
+    tmpfs:
+      - /run:rw,nosuid,nodev,mode=0755
+      - /tmp:rw,nosuid,nodev,mode=1777
+    shm_size: 2gb
+    healthcheck:
+      test: ["CMD", "/usr/local/sbin/cos-desktop-healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    stop_grace_period: 45s
+    mem_limit: ${MEM_LIMIT:-6g}
+    mem_reservation: ${MEM_RESERVATION:-1g}
+    cpus: ${CPU_LIMIT:-2.0}
+    pids_limit: 2048
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
