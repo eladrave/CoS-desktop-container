@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Google Chrome
+Comment=Open ChatGPT in the persistent browser profile
+Exec=/usr/bin/google-chrome-stable --no-first-run --disable-dev-shm-usage --password-store=gnome-libsecret https://chatgpt.com/
+TryExec=/usr/bin/google-chrome-stable
+Terminal=false
+StartupNotify=true
+X-GNOME-Autostart-enabled=true
