@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+
+runtime_dir=${COS_DESKTOP_RUNTIME_DIR:-/run/cos-desktop}
+session_file=${runtime_dir}/desktop.env
+temporary_file=${session_file}.$$
+
+: "${DISPLAY:?Chrome Remote Desktop did not provide DISPLAY}"
+xauthority=${XAUTHORITY:-/home/cos/.Xauthority}
+
+umask 077
+printf 'DISPLAY=%s\nXAUTHORITY=%s\n' "${DISPLAY}" "${xauthority}" >"${temporary_file}"
+mv -f "${temporary_file}" "${session_file}"
+
+exec dbus-run-session -- /usr/local/sbin/start-cos-xfce-session
