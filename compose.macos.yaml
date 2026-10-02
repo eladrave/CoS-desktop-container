@@ -1,0 +1,18 @@
+services:
+  desktop:
+    platform: linux/arm64
+    environment:
+      COS_DESKTOP_CRD_ENABLED: "0"
+    volumes:
+      - type: volume
+        source: cos-home
+        target: /home/cos
+      - type: volume
+        source: cos-machine
+        target: /var/lib/cos-desktop-persistent
+
+volumes:
+  cos-home:
+    name: ${VOLUME_PREFIX:-cos-desktop}-home
+  cos-machine:
+    name: ${VOLUME_PREFIX:-cos-desktop}-machine
